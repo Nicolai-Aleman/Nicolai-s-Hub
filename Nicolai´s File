@@ -1,0 +1,21 @@
+from moviepy.editor import VideoFileClip
+from moviepy.video.tools.subtitles import SubtitlesClip
+from moviepy.video.io.VideoFileClip import TextClip
+
+def generator(txt):
+    return TextClip(txt, font='Arial', fontsize=24, color='white')
+
+subtitles = [
+    # start time, end time, subtitle
+    ((0, 1, 23), (0, 1, 30), "Subtitle 1"),
+    ((0, 1, 31), (0, 1, 40), "Subtitle 2"),
+    # more subtitles...
+]
+
+subtitles = [(start, end, generator(txt)) for start, end, txt in subtitles]
+
+video = VideoFileClip("my_video.mp4")
+subtitle_clip = SubtitlesClip(subtitles)
+final = CompositeVideoClip([video, subtitle_clip.set_position(('center', 'bottom'))])
+
+final.write_videofile("my_video_with_subtitles.mp4")
